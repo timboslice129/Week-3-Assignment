@@ -1,0 +1,35 @@
+---
+title: "James Harden Threes made per game in the current 2019/2020 season"
+author: "Tim English"
+date: "27 February 2020"
+output: ioslides_presentation
+---
+
+## plot
+```{r, echo=FALSE, message=FALSE}
+library(dplyr)
+library(stringr)
+#importing james harden season data obtained from   #basketballreference.com
+harden <- read.csv("harden.csv", na.strings = c("Did Not Play", "Inactive"))
+# removing NA values (games he didn't play)
+harden <- harden[complete.cases(harden$PTS),]
+result = as.character(harden$X.1)
+result <- as.factor(str_sub(result,1,1))
+harden$winloss <- result
+harden$Threes <- harden$X3P
+harden$Game <- harden$G
+                   
+                   
+                   
+```
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+library(plotly)
+fig <- plot_ly(harden, x = ~Game , y = ~Threes, mode = "markers", size = harden$PTS, color = ~winloss)
+fig
+```
+
+# Note
+
+- The size of the markers represent total points scored by James Harden in the match
+- The colour of the markers represents a win or a loss 
